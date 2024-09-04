@@ -10,6 +10,36 @@ const Counter = () => {
   const [contract, setContract] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [connect,setConnect]= useState("Connect")
+
+  const connectToMetamask = async () => {
+    if (window.ethereum) {
+      try {
+        // Request account access if needed
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        
+        // Create a provider and signer
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        const address = await signer.getAddress();
+        
+        console.log(address);
+        setIsConnected(true);
+        setConnect("Connected");
+        setProvider(provider);
+        setSigner(signer);
+        
+        // Optionally, set up your contract instance here
+        const contract = new ethers.Contract(Address, counterABI, signer);
+        setContract(contract);
+        
+      } catch (error) {
+        console.error("Error connecting to MetaMask:", error);
+      }
+    } else {
+      console.log("Please install MetaMask!");
+    }
+  };
   
   useEffect(() => {
     const init = async () => {
@@ -95,6 +125,8 @@ const Counter = () => {
 
   return (
     <div style={{ textAlign: 'center', marginTop: '50px' }}>
+
+      <button onClick={connectToMetamask}>{connect}</button>
       <h1>Counter DApp</h1>
       {isConnected ? (
         <>
