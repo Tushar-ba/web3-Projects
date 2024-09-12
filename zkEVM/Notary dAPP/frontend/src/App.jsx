@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ethers } from 'ethers';
 import { contractAddress, contractABI } from "./utils/contractABI";
-import {NotaryAddress,NotaryABI} from "./utils/contractABI"
+import Notary from "./pages/Notary.jsx"
 // import {web3} from 'web3.js'
 
 const App = () => {
@@ -134,6 +134,7 @@ const App = () => {
 
   return (
     <div>
+      <Notary/>
       <h1>Notary</h1>
       <input
         type="text"
@@ -185,7 +186,7 @@ const App = () => {
       <button onClick={verifyTheSign}>Verify Signatures</button>
       <input
         type="text"
-        placeholder="Signature"
+        placeholder="Agreement ID"
         value={signature}
         onChange={(e) => setSignature(e.target.value)}
       />
